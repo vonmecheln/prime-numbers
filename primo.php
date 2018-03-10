@@ -4,16 +4,26 @@ set_time_limit(6000);
 session_start();
 //session_destroy();
 
-echo("<pre>");
 $limite_media = 5;
+if (isset($_GET['limite_media'])) {
+	$limite_media = $_GET['limite_media'];
+}
 
 $tini = getmicrotime();
+
 $max = 10000000;
+if (isset($_GET['max'])) {
+	$max = $_GET['max'];
+}
+
+echo "Use: primo.php?max=10000000&limite_media=5";
+echo("<pre>");
+
 $primo = array();
 $q = true;
 $atual = 1;
 for ($i = 3; $i <= $max; $i = $i+2) {
-	
+
 	if($q){
 		$mult = $i*$i;
 
@@ -23,7 +33,7 @@ for ($i = 3; $i <= $max; $i = $i+2) {
 			$q = false;
 		}
 	}
-	
+
 	if(isset($quad[$i])){
 		$atual = $quad[$i];
 		continue;
@@ -42,7 +52,7 @@ for ($i = 3; $i <= $max; $i = $i+2) {
 		}
 
 	}
-	
+
 	if(!$a){
 		$primo[] = $i;
 	}
@@ -54,9 +64,9 @@ $fini = getmicrotime();
 print_r("\n");
 $tempo = $fini - $tini;
 $_SESSION['time'][] = $tempo;
-if(sizeof($_SESSION['time']) > $limite_media)
+while(sizeof($_SESSION['time']) > $limite_media)
 {
-	array_shift(&$_SESSION['time']);
+	array_shift($_SESSION['time']);
 }
 echo("tempo: ".getmedia()."\n");
 
